@@ -1,28 +1,38 @@
 {
-  "name": "bss",
-  "version": "1.0.0",
-  "description": "compiler for bss language",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Chuntong Gao, Kerry Zhou, Max Song",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/chai": "^4.2.11",
-    "@types/mocha": "^7.0.2",
-    "chai": "^4.2.0",
-    "eslint": "^7.0.0",
-    "eslint-plugin-simple-import-sort": "^5.0.3",
-    "husky": "^4.2.5",
-    "lint-staged": "^10.2.4",
-    "mocha": "^7.1.2",
-    "prettier": "^2.0.5",
-    "source-map-support": "^0.5.19",
-    "typescript": "^3.9.2"
-  },
-  "dependencies": {
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0"
-  }
+    "author": "Chuntong Gao, Kerry Zhou, Max Song",
+    "dependencies": {
+        "babel-preset-env": "^1.7.0",
+        "babel-register": "^6.26.0"
+    },
+    "description": "compiler for bss language",
+    "devDependencies": {
+        "@types/chai": "^4.2.11",
+        "@types/mocha": "^7.0.2",
+        "@typescript-eslint/eslint-plugin": "^2.34.0",
+        "@typescript-eslint/parser": "^2.34.0",
+        "chai": "^4.2.0",
+        "eslint": "^7.0.0",
+        "eslint-plugin-simple-import-sort": "^5.0.3",
+        "husky": "^4.2.5",
+        "lint-staged": "^10.2.4",
+        "mocha": "^7.1.2",
+        "prettier": "^2.0.5",
+        "source-map-support": "^0.5.19",
+        "typescript": "^3.9.2"
+    },
+    "license": "ISC",
+    "main": "index.js",
+    "name": "bss",
+    "scripts": {
+        "build": "rm -rf build/ && npm run check && npm run tsc-build",
+        "check": "npm run prettier-check && npm run eslint-check && npm run tsc-check",
+        "eslint-check": "eslint --no-error-on-unmatched-pattern src/** test/** --ext .ts",
+        "eslint-fix": "eslint --no-error-on-unmatched-pattern src/** test/** --ext .ts --fix",
+        "fix": "npm run prettier-fix && npm run eslint-fix",
+        "prettier-check": "prettier --config ./.prettierrc.json --check \"./src/**/*.ts\" \"./test/**/*.ts\"",
+        "prettier-fix": "prettier --config ./.prettierrc.json --write \"./src/**/*.ts\" \"./test/**/*.ts\"",
+        "tsc-build": "tsc --listEmittedFiles",
+        "tsc-check": "tsc --noEmit --listEmittedFiles"
+    },
+    "version": "1.0.0"
 }

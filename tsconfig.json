@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+        "esModuleInterop": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "outDir": "build",
+        "paths": {
+            "*": [
+                "node_modules/*",
+                "src/types/*"
+            ]
+        },
+        "sourceMap": true,
+        "target": "es6"
+    },
+    "filesGlob": [
+        "src/**/*.ts",
+        "test/**/*.ts"
+    ]
+}
