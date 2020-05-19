@@ -1,0 +1,28 @@
+{
+  "name": "bss",
+  "version": "1.0.0",
+  "description": "compiler for bss language",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chuntong Gao, Kerry Zhou, Max Song",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "chai": "^4.2.0",
+    "eslint": "^7.0.0",
+    "eslint-plugin-simple-import-sort": "^5.0.3",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.4",
+    "mocha": "^7.1.2",
+    "prettier": "^2.0.5",
+    "source-map-support": "^0.5.19",
+    "typescript": "^3.9.2"
+  },
+  "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0"
+  }
+}
