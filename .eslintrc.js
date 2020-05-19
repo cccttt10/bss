@@ -13,7 +13,7 @@ module.exports = {
     },
     'plugins': ['simple-import-sort'],
     'rules': {
-        '@typescript-eslint/explicit-function-return-type': 'warn',
+        '@typescript-eslint/explicit-function-return-type': 'error',
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/no-explicit-any': 'error',
         '@typescript-eslint/no-unused-vars': ['error', {
