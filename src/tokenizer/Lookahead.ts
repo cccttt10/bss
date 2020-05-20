@@ -1,6 +1,6 @@
 import ParseError from './ParseError';
 
-export abstract class Lookahead<T> {
+export default abstract class Lookahead<T> {
     protected itemBuffer: Array<T> = [];
     protected endReached = false;
     protected problemCollector: ParseError[] = [];
