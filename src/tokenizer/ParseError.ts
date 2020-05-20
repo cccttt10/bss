@@ -6,7 +6,7 @@ export default class ParseError {
     private message: string;
     private readonly severity: Severity;
 
-    constructor(pos: Position, message: string, severity: Severity) {
+    protected constructor(pos: Position, message: string, severity: Severity) {
         this.pos = pos;
         this.message = message;
         this.severity = severity;

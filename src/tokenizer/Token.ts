@@ -10,7 +10,7 @@ export default class Token implements Position {
     private source = '';
 
     private line: number;
-    private pos: number;
+    protected pos: number;
 
     // TODO: private Token constructor
 
