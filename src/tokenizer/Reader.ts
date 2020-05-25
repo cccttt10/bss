@@ -7,7 +7,7 @@ export default class Reader {
 
     constructor(filename: string) {
         this.content = readFileSync(filename, 'utf-8');
-        this.content = this.content.replace('\n', ' ');
+        this.content = this.content.replace(/\n/g, ' ');
     }
 
     public read(): number | string {

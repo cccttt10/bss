@@ -1,2 +1,1 @@
-@mixin border-radius($radius) { 
-    -webkit-border-radius: $radius; -moz-border-radius: $radius; -ms-border-radius: $radius; -o-border-radius: $radius; border-radius: $radius; } .box { @include border-radius(10px); }
+@mixin border-radius($radius)                { -webkit-border-radius: $radius; -moz-border-radius:                $radius; -ms-border-radius: $radius; -o-border-radius: $radius; border-radius: $radius; } .box { @include border-radius(10px); } @mixin test() {  x.test &, y.test & {   background-color: #fff; } } .a, .b { @include test(); }  .message { border: 1px solid #ccc;  padding: 10px;  color: #333; } .success {  @extend .message;   border-color: green; }
