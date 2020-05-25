@@ -41,6 +41,10 @@ export default class ParseError {
     }
 
     public toString(): string {
-        return this.severity.toString() + this.message;
+        return (
+            (this.severity === Severity.WARNING ? 'WARNING' : 'ERROR') +
+            ' ' +
+            this.message
+        );
     }
 }

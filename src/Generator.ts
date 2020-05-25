@@ -75,6 +75,7 @@ export default class Generator {
             }
         }
         for (const section of sheet.getSections()) {
+            console.log('in this for loop');
             const stack: Section[] = [];
             this.expand(null, section, stack);
         }
@@ -192,6 +193,7 @@ export default class Generator {
         // not a media query
         if (mediaQueryPath === null) {
             // add to output
+            console.log('push section to sections');
             this.sections.push(section);
         } else {
             // we are already inside media query
@@ -202,9 +204,12 @@ export default class Generator {
         // i.e. flatten nesting
         const newSelectors: string[][] = [];
         for (const selector of section.getSelectors()) {
+            console.log('in expand section');
             if (stack.length === 0) {
                 // no parent selector
                 newSelectors.push(this.expandSelector(section, selector, null));
+                console.log('new selectors');
+                console.log(newSelectors);
             } else {
                 // create cross product of parent selector set
                 // and current selector set
@@ -298,8 +303,10 @@ export default class Generator {
         }
         const filteredSections = this.sections.filter(
             section =>
-                section.getSubSections().length === 0 &&
-                section.getAttributes().length === 0
+                !(
+                    section.getSubSections().length === 0 &&
+                    section.getAttributes().length === 0
+                )
         );
         this.sections = filteredSections;
     }
@@ -434,7 +441,10 @@ export default class Generator {
     }
 
     public generate(out: Output): void {
+        console.log('in generate');
+        console.log(this.sections.length);
         for (const section of this.sections) {
+            console.log('genere input for this section');
             section.generate(out);
             out.lineBreak();
             out.optionalLineBreak();

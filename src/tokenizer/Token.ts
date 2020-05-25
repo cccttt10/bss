@@ -143,6 +143,9 @@ export default class Token implements Position {
     }
 
     public is(type: TokenType): boolean {
+        console.log(this.type);
+        console.log(type);
+        console.log(this.type === type);
         return this.type === type;
     }
 

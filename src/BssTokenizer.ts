@@ -71,6 +71,10 @@ export default class BssTokenizer extends Tokenizer {
         support vendor specific and class selectors
         e.g. -moz-border-radius or .test
         */
+        console.log('current is . ?');
+        console.log(this.input.current().is('.'));
+        console.log('next is letter?');
+        console.log(this.input.next().isLetter());
         return (
             (this.input.current().is('-') || this.input.current().is('.')) &&
             this.input.next().isLetter()
@@ -85,6 +89,9 @@ export default class BssTokenizer extends Tokenizer {
         selectors can contain "-", "." or "#"
         as long as it is not the last char of the token
         */
+        //    console.log('current is')
+        //    console.log(current)
+        //    console.log(current.is('.'))
         return (
             (current.is('-') || current.is('.') || current.is('#')) &&
             !this.input.next().isWhitespace()

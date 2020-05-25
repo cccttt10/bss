@@ -40,7 +40,7 @@ export default class Char implements Position {
 
     public isLetter(): boolean {
         const lower: string = this.value.toLowerCase();
-        return (
+        const isLetter =
             lower === 'a' ||
             lower === 'b' ||
             lower === 'c' ||
@@ -66,12 +66,12 @@ export default class Char implements Position {
             lower === 'w' ||
             lower === 'x' ||
             lower === 'y' ||
-            lower === 'z'
-        );
+            lower === 'z';
+        return isLetter;
     }
 
     public isWhitespace(): boolean {
-        return this.value === '' && !this.isEndOfInput();
+        return this.value === ' ' && !this.isEndOfInput();
     }
 
     public isNewLine(): boolean {

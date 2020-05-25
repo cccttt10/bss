@@ -62,7 +62,10 @@ export default class Parser {
             } else {
                 // everything else is considered a "normal" section
                 // with selectors and attributes
+                console.info('parse normal section');
                 this.result.addSection(this.parseSection(false));
+                console.info('parse normal section finsihed');
+                console.log(this.result.getSections()[0]);
             }
         }
 
@@ -89,6 +92,8 @@ export default class Parser {
         while (this.tokenizer.more()) {
             if (this.tokenizer.current().isSymbol('}')) {
                 this.tokenizer.consumeExpectedSymbol('}');
+                console.log('will return section here');
+                console.log(section.toString());
                 return section;
             }
             // parse "normal" attributes
@@ -209,6 +214,8 @@ export default class Parser {
             // e.g. "b div.test"
             while (this.tokenizer.more()) {
                 const selector: string[] = this.parseSelector();
+                console.log('selector is');
+                console.log(selector);
                 result.getSelectors().push(selector);
                 // if another selector is given
                 // swallow the "," and parse the next selector
@@ -319,8 +326,9 @@ export default class Parser {
                 this.tokenizer.current().isNumber()
             ) {
                 let str: string = this.tokenizer.consumeNoArg().getSource();
-                str = str + this.parseFilterInSelector(str);
-                str = str + this.parseOperatorInSelector(str);
+                str = this.parseFilterInSelector(str);
+                str = this.parseOperatorInSelector(str);
+                console.log(`will push ${str} to selector`);
                 selector.push(str);
             } else if (
                 this.tokenizer.current().isSymbol('&') ||
@@ -342,8 +350,8 @@ export default class Parser {
     private parseSelectorPrefix(selector: string[]): void {
         if (this.tokenizer.more() && this.tokenizer.current().isSymbol('[')) {
             let str = '';
-            str = str + this.parseFilterInSelector(str);
-            str = str + this.parseOperatorInSelector(str);
+            str = this.parseFilterInSelector(str);
+            str = this.parseOperatorInSelector(str);
             selector.push(str);
         }
         if (this.tokenizer.more() && this.tokenizer.current().isSymbol('&')) {
@@ -379,7 +387,7 @@ export default class Parser {
             // consume arguments
             // e.g. :nth-child(2)
             if (this.tokenizer.current().isSymbol('(')) {
-                str = str + this.consumeArgument(str);
+                str = this.consumeArgument(str);
             }
             selector.push(str);
         }
@@ -390,8 +398,8 @@ export default class Parser {
             this.tokenizer.current().isSymbol(':') ||
             this.tokenizer.current().isSymbol('::')
         ) {
-            str = str + this.tokenizer.consumeNoArg().getSource();
-            str = str + this.tokenizer.consumeNoArg().getSource();
+            str = this.tokenizer.consumeNoArg().getSource();
+            str = this.tokenizer.consumeNoArg().getSource();
 
             // consume arguments
             // e.g. :nth-child(2)
@@ -403,7 +411,7 @@ export default class Parser {
     }
 
     private consumeArgument(str: string): string {
-        str = str + this.tokenizer.consumeNoArg().getSource();
+        str = this.tokenizer.consumeNoArg().getSource();
         let braces = 1;
         while (!this.tokenizer.current().isEnd() && braces > 0) {
             if (this.tokenizer.current().isSymbol('(')) {
@@ -412,7 +420,7 @@ export default class Parser {
             if (this.tokenizer.current().isSymbol(')')) {
                 braces = braces - 1;
             }
-            str = str + this.tokenizer.consumeNoArg().getSource();
+            str = this.tokenizer.consumeNoArg().getSource();
         }
         return str;
     }
@@ -420,11 +428,11 @@ export default class Parser {
     private parseFilterInSelector(str: string): string {
         while (this.tokenizer.current().isSymbol('[')) {
             // consume [
-            str = str + this.tokenizer.consumeNoArg().getContents();
-            str = str + this.readAttributeName(str);
-            str = str + this.readOperator(str);
-            str = str + this.readValue(str);
-            str = str + this.readClosingBracket(str);
+            str = this.tokenizer.consumeNoArg().getContents();
+            str = this.readAttributeName(str);
+            str = this.readOperator(str);
+            str = this.readValue(str);
+            str = this.readClosingBracket(str);
         }
         return str;
     }
@@ -438,14 +446,14 @@ export default class Parser {
                     .getSource()}'. Expected: ']'`
             );
         } else {
-            str = str + this.tokenizer.consumeNoArg().getContents();
+            str = this.tokenizer.consumeNoArg().getContents();
         }
         return str;
     }
 
     private readValue(str: string): string {
         if (!this.tokenizer.current().isSymbol(']')) {
-            str = str + this.tokenizer.consumeNoArg().getSource();
+            str = this.tokenizer.consumeNoArg().getSource();
         }
         return str;
     }
@@ -462,7 +470,7 @@ export default class Parser {
                         .getSource()}'. Expected an operation.`
                 );
             }
-            str = str + this.tokenizer.consumeNoArg().getTrigger();
+            str = this.tokenizer.consumeNoArg().getTrigger();
         }
         return str;
     }
@@ -477,7 +485,7 @@ export default class Parser {
                         .getSource()}'. Expected an attribute name.`
                 );
             }
-            str = str + this.tokenizer.consumeNoArg().getContents();
+            str = this.tokenizer.consumeNoArg().getContents();
         }
         return str;
     }

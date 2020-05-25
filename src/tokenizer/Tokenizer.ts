@@ -291,7 +291,7 @@ export default class Tokenizer extends Lookahead<Token> {
                 ? idToken.getContents() // TODO: no intern in JS
                 : idToken.getContents().toLowerCase()
         );
-        if (keyword !== null && keyword !== null) {
+        if (keyword !== null && keyword !== undefined) {
             const keywordToken: Token = Token.create(TokenType.KEYWORD, idToken);
             keywordToken.setTrigger(keyword);
             keywordToken.setContents(idToken.getContents());

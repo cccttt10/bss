@@ -104,6 +104,7 @@ export default class Section {
     }
 
     public generate(out: Output): void {
+        console.log('in section generate');
         out.output(this.getSelectorString());
         out.output(' {');
         out.incIndent();

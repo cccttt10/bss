@@ -7,7 +7,10 @@ export default abstract class Lookahead<T> {
     protected endOfInputIndicator: T;
 
     public current(): T {
-        return this.next(0);
+        const returnVal = this.next(0);
+        console.log('next is');
+        console.log(returnVal);
+        return returnVal;
     }
 
     // TODO next(), next(int offset)
@@ -23,13 +26,21 @@ export default abstract class Lookahead<T> {
             if (item !== null) {
                 this.itemBuffer.push(item);
             } else {
+                // console.log('fetched item is null')
                 this.endReached = true;
             }
         }
         if (offset >= this.itemBuffer.length) {
-            if (this.endOfInputIndicator === null) {
+            if (
+                this.endOfInputIndicator === null ||
+                this.endOfInputIndicator === undefined
+            ) {
+                // console.log('endofinputindicator is null inside if')
                 this.endOfInputIndicator = this.endOfInput();
             }
+            // console.log('will return endofinoutindicator');
+            // console.log(this.endOfInputIndicator);
+            // console.log(this);
             return this.endOfInputIndicator;
         } else {
             return this.itemBuffer[offset];

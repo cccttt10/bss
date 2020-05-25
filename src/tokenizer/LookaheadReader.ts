@@ -14,6 +14,7 @@ export default class LookaheadReader extends Lookahead<Char> {
         if (input === null || input === undefined) {
             throw new Error('input must not be null');
         }
+        this.input = input;
     }
 
     protected endOfInput(): Char {
