@@ -16,18 +16,15 @@ module.exports = {
         '@typescript-eslint/explicit-function-return-type': 'error',
         '@typescript-eslint/interface-name-prefix': 'off',
         '@typescript-eslint/no-explicit-any': 'error',
-        '@typescript-eslint/no-unused-vars': ['error', {
-            'argsIgnorePattern': '^(req|res|next)$'
-        }],
+        '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/no-use-before-define': 'warn',
         'camelcase': 'error',
         'eqeqeq': 'error',
+        "init-declarations": ["error", "always"],
         'max-lines': ['warn', 200],
         'no-console': 'warn',
         'no-trailing-spaces': 'error',
-        'no-unused-vars': ['error', {
-            'argsIgnorePattern': '^(req|res|next)$'
-        }],
+        'no-unused-vars': 'error',
         'no-useless-escape': 'off',
         'no-var': 'error',
         'require-await': 'error',

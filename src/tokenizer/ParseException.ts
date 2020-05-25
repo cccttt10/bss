@@ -27,12 +27,12 @@ export default class ParseException {
     }
 
     public toString(): string {
-        let str: string;
+        let str = '';
         for (const error of this.errors) {
             if (str.length > 0) {
-                str += '\n';
+                str = str + '\n';
             }
-            str += error.toString();
+            str = str + error.toString();
         }
         return str;
     }
