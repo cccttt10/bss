@@ -1,20 +1,9 @@
-.message {
-  border: 1px solid #ccc;
-  padding: 10px;
-  color: #333;
+p {
+    border: 1px outline red;
+    font-size: 2rem;
 }
 
-.success {
-  @extend .message;
-  border-color: green;
-}
-
-.error {
-  @extend .message;
-  border-color: red;
-}
-
-.warning {
-  @extend .message;
-  border-color: yellow;
+.paragraph {
+    font-weight: 100;
+    font-size: 200%;
 }

@@ -94,19 +94,10 @@ export default class Operation implements Expression {
         }
         const rounded: number = Math.round(value);
         if (Math.abs(value - rounded) > 0.009) {
-            return new Num('long', {
-                numericValue: value,
-                value: value.toString(),
-                unit: unit,
-            });
+            return new Num(value.toString() + unit);
             // TODO: value not formatted as String.format(Locale.ENGLISH, "%1.2f"
         }
-
-        return new Num('long', {
-            numericValue: value,
-            value: Math.round(value).toString(),
-            unit: unit,
-        });
+        return new Num(value.toString() + unit);
     }
 
     private isPercentResult(l: Num, r: Num): boolean {

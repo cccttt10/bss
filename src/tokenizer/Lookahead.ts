@@ -1,4 +1,5 @@
 import ParseError from './ParseError';
+import Token from './Token';
 
 export default abstract class Lookahead<T> {
     protected itemBuffer: Array<T> = [];
@@ -8,8 +9,10 @@ export default abstract class Lookahead<T> {
 
     public current(): T {
         const returnVal = this.next(0);
-        console.log('next is');
-        console.log(returnVal);
+        if (returnVal instanceof Token) {
+            console.log('next token is');
+            console.log(returnVal.toString());
+        }
         return returnVal;
     }
 

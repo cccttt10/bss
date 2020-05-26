@@ -9,8 +9,6 @@ export default class LookaheadReader extends Lookahead<Char> {
 
     constructor(input: Reader) {
         super();
-        console.log('look aheader reader is init');
-        console.log(input);
         if (input === null || input === undefined) {
             throw new Error('input must not be null');
         }
@@ -23,7 +21,6 @@ export default class LookaheadReader extends Lookahead<Char> {
 
     // TODO: no try
     protected fetch(): Char {
-        console.log(this);
         const character: number | string = this.input.read();
         if (character === -1) {
             return null;

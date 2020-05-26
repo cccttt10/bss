@@ -1,14 +1,15 @@
 import Generator from '../Generator';
 import Scope from '../Scope';
+import { stdout } from '../util';
 import Expression from './Expression';
 
 export default class Num implements Expression {
-    private value: string;
+    private numericValue: number | null;
+    private value: string; // string representation of numericValue
     private unit: string;
     private static readonly NORMAL_NUMBER: string = '(\\d+)([a-z]+|%)';
     private static readonly DECIMAL_NUMBER: string =
         '(\\.\\d+|\\d+\\.\\d+)([a-z]+|%)';
-    private numericValue: number | null;
 
     public isLetter(char: string): boolean {
         const lower: string = char.toLowerCase();
@@ -51,23 +52,8 @@ export default class Num implements Expression {
         return -1;
     }
 
-    constructor(
-        type: 'short' | 'long',
-        args: string | { numericValue: number; value: string; unit: string }
-    ) {
-        if (type === 'short') {
-            this.shortConstructor(args as string);
-        } else {
-            const { numericValue, value, unit } = args as {
-                numericValue: number;
-                value: string;
-                unit: string;
-            };
-            this.longConstructor(numericValue, value, unit);
-        }
-    }
-
-    private shortConstructor(val: string): void {
+    constructor(val: string) {
+        stdout.info(`short num constructor ${val}`);
         this.numericValue = null;
         const matchesNormalNumber: boolean = new RegExp(Num.NORMAL_NUMBER).test(val);
         if (matchesNormalNumber) {
@@ -85,16 +71,6 @@ export default class Num implements Expression {
                 this.unit = '';
             }
         }
-    }
-
-    private longConstructor(
-        numericValue: number,
-        value: string,
-        unit: string
-    ): void {
-        this.numericValue = numericValue;
-        this.value = value;
-        this.unit = unit;
     }
 
     public getValue(): string {

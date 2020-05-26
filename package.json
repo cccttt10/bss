@@ -3,11 +3,13 @@
     "dependencies": {
         "babel-preset-env": "^1.7.0",
         "babel-register": "^6.26.0",
+        "colors": "^1.4.0",
         "consola": "^2.12.1"
     },
     "description": "compiler for bss language",
     "devDependencies": {
         "@types/chai": "^4.2.11",
+        "@types/colors": "^1.2.1",
         "@types/consola": "^2.2.5",
         "@types/mocha": "^7.0.2",
         "@types/node": "^14.0.4",

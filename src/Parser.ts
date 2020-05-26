@@ -62,10 +62,7 @@ export default class Parser {
             } else {
                 // everything else is considered a "normal" section
                 // with selectors and attributes
-                console.info('parse normal section');
                 this.result.addSection(this.parseSection(false));
-                console.info('parse normal section finsihed');
-                console.log(this.result.getSections()[0]);
             }
         }
 
@@ -92,8 +89,6 @@ export default class Parser {
         while (this.tokenizer.more()) {
             if (this.tokenizer.current().isSymbol('}')) {
                 this.tokenizer.consumeExpectedSymbol('}');
-                console.log('will return section here');
-                console.log(section.toString());
                 return section;
             }
             // parse "normal" attributes
@@ -214,8 +209,6 @@ export default class Parser {
             // e.g. "b div.test"
             while (this.tokenizer.more()) {
                 const selector: string[] = this.parseSelector();
-                console.log('selector is');
-                console.log(selector);
                 result.getSelectors().push(selector);
                 // if another selector is given
                 // swallow the "," and parse the next selector
@@ -328,7 +321,6 @@ export default class Parser {
                 let str: string = this.tokenizer.consumeNoArg().getSource();
                 str = this.parseFilterInSelector(str);
                 str = this.parseOperatorInSelector(str);
-                console.log(`will push ${str} to selector`);
                 selector.push(str);
             } else if (
                 this.tokenizer.current().isSymbol('&') ||
@@ -609,7 +601,7 @@ export default class Parser {
     private parseAtom(): Expression {
         // parse number
         if (this.tokenizer.current().isNumber()) {
-            return new Num('long', this.tokenizer.consumeNoArg().getContents());
+            return new Num(this.tokenizer.consumeNoArg().getContents());
         }
 
         // parse color
