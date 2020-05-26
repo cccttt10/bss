@@ -118,6 +118,10 @@ export default class Token implements Position {
         if (this.trigger === null) {
             throw new Error('trigger must no be null');
         }
+        if (trigger === ',') {
+            console.log('trigger === this.getTrigger()');
+            console.log(this.getTrigger() === trigger);
+        }
         return this.getTrigger() === trigger;
     }
 
@@ -234,15 +238,19 @@ export default class Token implements Position {
 
     public toString(): string {
         return (
+            'type: ' +
             this.getType().toString() +
-            '        ' +
+            '\n' +
+            'source: ' +
             this.getSource() +
-            '        ' +
-            ' (' +
-            this.line +
-            ':' +
-            this.pos +
-            ')'
+            '\n' +
+            'contents: ' +
+            this.getContents() +
+            '\n' +
+            'trigger: ' +
+            `|${this.getTrigger()}|` +
+            '\n' +
+            `${this.line},${this.pos}`
         );
     }
 }

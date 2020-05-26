@@ -1,5 +1,5 @@
 p {
-    border: 1px outline red;
+    border: 1px, outline, red;
     font-size: 2rem;
 }
 

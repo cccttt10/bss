@@ -19,7 +19,7 @@ import ParseException from './tokenizer/ParseException';
 import Reader from './tokenizer/Reader';
 import Token from './tokenizer/Token';
 import TokenType from './tokenizer/TokenType';
-import { throwParseException } from './util';
+import { stdout, throwParseException } from './util';
 
 export default class Parser {
     public static readonly KEYWORD_IMPORT = 'import';
@@ -509,6 +509,7 @@ export default class Parser {
     also lists separated by " " will be parsed as ValueList
     */
     private parseExpression(acceptLists: boolean): Expression {
+        stdout.info('is list accepted? ' + acceptLists);
         let expression: Expression = acceptLists
             ? this.parseAtomList()
             : this.parseAtom();
@@ -574,7 +575,12 @@ export default class Parser {
     5) other expressions in braces
     */
     private parseAtomList(): Expression {
+        // stdout.success('parseAtomList is called');
         const exp: Expression = this.parseAtom();
+        stdout.success(`in parseAtomList, exp is ${exp.toString()}`);
+        stdout.success(`current token is ${this.tokenizer.current().toString()}`);
+        // stdout.success(`next token is really a comma? ${this.tokenizer.current().getContents() === ','}`);
+        stdout.success(this.tokenizer.current().getContents().length.toString());
         if (!this.tokenizer.current().isSymbol(',')) {
             return exp;
         }
@@ -585,7 +591,8 @@ export default class Parser {
             this.tokenizer.consumeNoArg();
             atomList.add(this.parseAtom());
         }
-
+        console.log('value list is: ');
+        stdout.info(atomList.toString());
         return atomList;
     }
 

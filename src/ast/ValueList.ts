@@ -10,11 +10,12 @@ export default class ValueList implements Expression {
         this.keepCommas = keepCommas;
     }
 
+    // print: element1, element2, element3
     public toString(): string {
         let str = '';
         for (const expr of this.elements) {
             if (str.length > 0) {
-                str = str + this.keepCommas ? ',' : ' ';
+                str = str + (this.keepCommas ? ',' : ' ');
             }
             str = str + expr.toString();
         }
