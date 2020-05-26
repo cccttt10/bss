@@ -15,4 +15,6 @@ export default interface Expression {
     @return possibly simplified version of expression
     */
     eval(scope: Scope, gen: Generator): Expression;
+
+    toString(): string;
 }

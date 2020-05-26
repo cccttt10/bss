@@ -611,9 +611,27 @@ export default class Parser {
         if (this.tokenizer.current().isNumber()) {
             return new Num('long', this.tokenizer.consumeNoArg().getContents());
         }
+
         // parse color
+
         if (this.tokenizer.current().isSpecialIdentifier('#')) {
-            return new Color('hexString', this.tokenizer.consumeNoArg().getSource());
+            const hexString: string = this.tokenizer.consumeNoArg().getSource();
+            const matchesLongHexPattern: boolean = new RegExp(
+                Color.LONG_RGB_HEX_PATTERN
+            ).test(hexString);
+            const matchesShortHexPattern: boolean = new RegExp(
+                Color.SHORT_RGB_HEX_PATTERN
+            ).test(hexString);
+            if (matchesLongHexPattern || matchesShortHexPattern) {
+                return new Color(hexString);
+            } else {
+                this.tokenizer.addError(
+                    this.tokenizer.current(),
+                    "Unexpected token: '" +
+                        this.tokenizer.consumeNoArg().getSource() +
+                        "'. Expected an color hex string like #a12 or #a3aa31."
+                );
+            }
         }
 
         // parse identifier or function call
