@@ -1,6 +1,5 @@
 import Generator from '../Generator';
 import Scope from '../Scope';
-import { stdout } from '../util';
 import Expression from './Expression';
 
 export default class Num implements Expression {
@@ -53,7 +52,6 @@ export default class Num implements Expression {
     }
 
     constructor(val: string) {
-        stdout.info(`short num constructor ${val}`);
         this.numericValue = null;
         const matchesNormalNumber: boolean = new RegExp(Num.NORMAL_NUMBER).test(val);
         if (matchesNormalNumber) {

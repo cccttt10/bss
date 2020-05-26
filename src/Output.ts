@@ -16,7 +16,6 @@ export default class Output {
     }
 
     public output(str: string): Output {
-        // console.log('output is' + str);
         this.writer.write(str);
         return this;
     }

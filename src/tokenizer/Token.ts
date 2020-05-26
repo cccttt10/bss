@@ -118,10 +118,6 @@ export default class Token implements Position {
         if (this.trigger === null) {
             throw new Error('trigger must no be null');
         }
-        if (trigger === ',') {
-            console.log('trigger === this.getTrigger()');
-            console.log(this.getTrigger() === trigger);
-        }
         return this.getTrigger() === trigger;
     }
 

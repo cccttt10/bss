@@ -1,3 +1,4 @@
+import { stdout } from '../util';
 import Char from './Char';
 import Lookahead from './Lookahead';
 import LookaheadReader from './LookaheadReader';
@@ -573,8 +574,9 @@ export default class Tokenizer extends Lookahead<Token> {
 
     public throwOnErrorOrWarning(): void {
         if (this.getProblemCollector().length > 0) {
-            // eslint-disable-next-line no-console
-            console.log(ParseException.create(this.getProblemCollector()));
+            stdout.error(
+                ParseException.create(this.getProblemCollector()).toString()
+            );
             throw new Error();
         }
     }
@@ -582,8 +584,9 @@ export default class Tokenizer extends Lookahead<Token> {
     public throwOnError(): void {
         for (const e of this.getProblemCollector()) {
             if (e.getSeverity() === Severity.ERROR) {
-                // eslint-disable-next-line no-console
-                console.log(ParseException.create(this.getProblemCollector()));
+                stdout.error(
+                    ParseException.create(this.getProblemCollector()).toString()
+                );
                 throw new Error();
             }
         }

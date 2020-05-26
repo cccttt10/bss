@@ -1,7 +1,6 @@
-import consola from 'consola';
-
 import Generator from '../Generator';
 import Scope from '../Scope';
+import { stdout } from '../util';
 import Expression from './Expression';
 import Num from './Num';
 import Value from './Value';
@@ -124,7 +123,7 @@ export default class Operation implements Expression {
             return rUnit;
         }
         if (rUnit !== null && rUnit.length > 0 && rUnit !== lUnit) {
-            consola.warn(
+            stdout.warn(
                 `Incompatible units mixed in expression '%${this}': will use left unit as result`
             );
         }
@@ -137,7 +136,7 @@ export default class Operation implements Expression {
             if (rVal !== 0) {
                 value = lVal / rVal;
             } else {
-                consola.warn(
+                stdout.warn(
                     `Cannot evaluate: '%${this}': division by 0: will default to 0 as result`
                 );
             }

@@ -1,3 +1,4 @@
+import { stdout } from '../util';
 import ParseError from './ParseError';
 import Token from './Token';
 
@@ -9,9 +10,11 @@ export default abstract class Lookahead<T> {
 
     public current(): T {
         const returnVal = this.next(0);
-        if (returnVal instanceof Token) {
-            console.log('next token is');
-            console.log(returnVal.toString());
+        if (process.env.NODE_ENV === 'debug') {
+            if (returnVal instanceof Token) {
+                stdout.success('next token is');
+                stdout.info(returnVal.toString());
+            }
         }
         return returnVal;
     }
@@ -29,7 +32,6 @@ export default abstract class Lookahead<T> {
             if (item !== null) {
                 this.itemBuffer.push(item);
             } else {
-                // console.log('fetched item is null')
                 this.endReached = true;
             }
         }
@@ -38,12 +40,8 @@ export default abstract class Lookahead<T> {
                 this.endOfInputIndicator === null ||
                 this.endOfInputIndicator === undefined
             ) {
-                // console.log('endofinputindicator is null inside if')
                 this.endOfInputIndicator = this.endOfInput();
             }
-            // console.log('will return endofinoutindicator');
-            // console.log(this.endOfInputIndicator);
-            // console.log(this);
             return this.endOfInputIndicator;
         } else {
             return this.itemBuffer[offset];

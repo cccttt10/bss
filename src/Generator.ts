@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import consola from 'consola';
 
 import Attribute from './ast/Attribute';
 import Expression from './ast/Expression';
@@ -16,6 +15,7 @@ import Parser from './Parser';
 import Scope from './Scope';
 import ParseException from './tokenizer/ParseException';
 import Reader from './tokenizer/Reader';
+import { stdout } from './util';
 
 export default class Generator {
     protected importedSheets: Set<string> = new Set<string>();
@@ -35,7 +35,7 @@ export default class Generator {
             reader = new Reader(`./${sheet}`);
         } catch (err) {
             // TODO: throw?
-            consola.error(`Cannot read file ./${sheet}`);
+            stdout.error(`Cannot read file ./${sheet}`);
             throw err;
         }
         const parser: Parser = new Parser(sheet, reader);
@@ -67,7 +67,7 @@ export default class Generator {
             if (!this.scope.has(variable.getName()) || !variable.isDefaultValue()) {
                 this.scope.set(variable.getName(), variable.getValue());
             } else {
-                consola.warn(
+                stdout.warn(
                     "will skip redundant variable definition: '" +
                         variable.toString +
                         "'"
@@ -156,7 +156,7 @@ export default class Generator {
             }
         }
         if (copy.getSelectors().length === 0) {
-            consola.warn(
+            stdout.warn(
                 `Cannot define attributes in @media selector '%${section.getMediaQuery(
                     this.scope,
                     this
@@ -312,7 +312,7 @@ export default class Generator {
             if (toBeExtended !== null && toBeExtended !== undefined) {
                 toBeExtended.getSelectors().unshift(...section.getSelectors());
             } else {
-                consola.warn(
+                stdout.warn(
                     `Skipping unknown @extend '%${extend}' referenced by selector '%${section.getSelectorString()}'`
                 );
             }
@@ -334,7 +334,7 @@ export default class Generator {
             const subScope: Scope = new Scope(this.scope);
             const mixin: Mixin = this.mixins.get(ref.getName());
             if (mixin === null || mixin === undefined) {
-                consola.warn(
+                stdout.warn(
                     `Skipping unknown @mixin '%${ref.getName()}' referenced by selector '%${section.getSelectorString()}'`
                 );
 
@@ -351,7 +351,7 @@ export default class Generator {
         mixin: Mixin
     ): void {
         if (mixin.getParameters().length !== ref.getParameters().length) {
-            consola.warn(
+            stdout.warn(
                 `@mixin call '${ref.getName()}' by selector '${section.getSelectorString()}' does not match expected number of parameters. Found: ${
                     ref.getParameters().length
                 }, expected: ${mixin.getParameters().length}`
