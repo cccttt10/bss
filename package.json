@@ -1,12 +1,11 @@
 {
     "author": "Chuntong Gao, Kerry Zhou, Max Song",
     "dependencies": {
-        "babel-preset-env": "^1.7.0",
-        "babel-register": "^6.26.0",
         "colors": "^1.4.0"
     },
     "description": "compiler for bss language",
     "devDependencies": {
+        "@istanbuljs/nyc-config-typescript": "^1.0.1",
         "@types/chai": "^4.2.11",
         "@types/colors": "^1.2.1",
         "@types/mocha": "^7.0.2",
@@ -14,30 +13,35 @@
         "@typescript-eslint/eslint-plugin": "^2.34.0",
         "@typescript-eslint/parser": "^2.34.0",
         "chai": "^4.2.0",
+        "cross-env": "^7.0.2",
         "eslint": "^7.0.0",
         "eslint-plugin-simple-import-sort": "^5.0.3",
         "husky": "^4.2.5",
         "lint-staged": "^10.2.4",
-        "mocha": "^7.1.2",
+        "mocha": "^4.1.0",
+        "nyc": "^11.3.0",
         "prettier": "^2.0.5",
         "source-map-support": "^0.5.19",
+        "ts-node": "^8.10.1",
         "typescript": "^3.9.2"
     },
     "license": "ISC",
     "main": "index.js",
     "name": "bss",
     "scripts": {
-        "build": "rm -rf build/ && npm run check && npm run tsc-build",
+        "build": "bash tsc-clean.sh && npm run check && npm run tsc-build",
         "check": "npm run prettier-check && npm run eslint-check && npm run tsc-check",
-        "eslint-check": "eslint --no-error-on-unmatched-pattern src/** test/** --ext .ts",
-        "eslint-fix": "eslint --no-error-on-unmatched-pattern src/** test/** --ext .ts --fix",
+        "debug": "cross-env NODE_ENV=debug node ./src/index.js",
+        "eslint-check": "eslint --no-error-on-unmatched-pattern src/**/*.ts test/**/*.ts --ext .ts",
+        "eslint-fix": "eslint --no-error-on-unmatched-pattern src/**/*.ts test/**/*.ts --ext .ts --fix",
         "fix": "npm run prettier-fix && npm run eslint-fix",
         "prettier-check": "prettier --config ./.prettierrc.json --check \"./src/**/*.ts\" \"./test/**/*.ts\"",
         "prettier-fix": "prettier --config ./.prettierrc.json --write \"./src/**/*.ts\" \"./test/**/*.ts\"",
+        "start": "node ./src/index.js",
+        "test": "mocha --timeout 20000 --require ts-node/register --require source-map-support/register --recursive",
+        "test-cover": "nyc npm run test",
         "tsc-build": "tsc --listEmittedFiles",
-        "tsc-check": "tsc --noEmit --listEmittedFiles",
-        "debug": "NODE_ENV=debug node build/src/index.js",
-        "start": "node build/src/index.js"
+        "tsc-check": "tsc --noEmit --listEmittedFiles"
     },
     "version": "1.0.0"
 }

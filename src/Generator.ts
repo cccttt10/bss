@@ -252,10 +252,7 @@ export default class Generator {
                     selector.push(e);
                 }
             } else {
-                const newSelector: string[] = [...parentSelector, ...selector];
-                for (const e of newSelector) {
-                    selector.push(e);
-                }
+                selector.unshift(...parentSelector);
             }
         }
 

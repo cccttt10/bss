@@ -4,15 +4,27 @@ export default class Output {
     protected indentLevel = 0;
     protected indentDepth = '    ';
     protected skipOptionalOutput: boolean;
-    protected writer: fs.WriteStream = fs.createWriteStream('out.css', {
-        flags: 'a', // 'a' means appending (old data will be preserved)
-    });
+    protected readonly writer: fs.WriteStream;
 
-    constructor(writer: fs.WriteStream | null, skipOptionalOutput: boolean) {
-        if (writer !== null) {
-            this.writer = writer;
-        }
+    constructor(
+        skipOptionalOutput: boolean,
+        outFileName: string = Date.now().toString()
+    ) {
         this.skipOptionalOutput = skipOptionalOutput;
+        if (!fs.existsSync('./out/')) {
+            fs.mkdirSync('./out/');
+        }
+        const outFile = `./out/${outFileName}.css`;
+        if (fs.existsSync(outFile)) {
+            fs.unlinkSync(outFile);
+        }
+        this.writer = fs.createWriteStream(`./out/${outFileName}.css`, {
+            flags: 'a',
+        });
+    }
+
+    public getWriter(): fs.WriteStream {
+        return this.writer;
     }
 
     public output(str: string): Output {

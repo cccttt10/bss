@@ -5,5 +5,5 @@ const gen: Generator = new Generator();
 gen.importStylesheetByName('selectors.bss');
 gen.compile();
 
-const output = new Output(null, false);
+const output: Output = new Output(false);
 gen.generate(output);
