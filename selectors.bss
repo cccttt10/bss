@@ -1,7 +1,29 @@
-$font-collection: Times New Roman, sans-serif;
-$primary-text-color: #666;
+.message-shared {
+  border: 2px solid #bbb;
+  padding: 20px;
+  color: #444;
+}
 
-html {
-  font: 90% $font-collection;
-  color: $primary-text-color;
+.equal-heights {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.message {
+  @extend .message-shared;
+}
+
+.success {
+  @extend .message-shared;
+  background-color: green;
+}
+
+.error {
+  @extend .message-shared;
+  background-color: red;
+}
+
+.warning {
+  @extend .message-shared;
+  background-color: yellow;
 }

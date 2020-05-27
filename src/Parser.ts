@@ -24,7 +24,7 @@ import { throwParseException } from './util';
 export default class Parser {
     public static readonly KEYWORD_IMPORT = 'import';
     public static readonly KEYWORD_FUNC = 'func';
-    public static readonly KEYWORD_INCLUDE = 'include';
+    public static readonly KEYWORD_CALL = 'call';
     public static readonly KEYWORD_EXTEND = 'extend';
     public static readonly KEYWORD_MEDIA = 'media';
     private readonly tokenizer: BssTokenizer;
@@ -99,8 +99,8 @@ export default class Parser {
             } else if (this.tokenizer.current().isKeyword(Parser.KEYWORD_MEDIA)) {
                 // parse @media subsections
                 section.addSubSection(this.parseSection(true));
-            } else if (this.tokenizer.current().isKeyword(Parser.KEYWORD_INCLUDE)) {
-                this.parseInclude(section);
+            } else if (this.tokenizer.current().isKeyword(Parser.KEYWORD_CALL)) {
+                this.parseCall(section);
             } else if (this.tokenizer.current().isKeyword(Parser.KEYWORD_EXTEND)) {
                 this.parseExtend(section);
             } else {
@@ -153,7 +153,7 @@ export default class Parser {
                 this.tokenizer.current(),
                 "Unexpected token: '" +
                     this.tokenizer.current().getSource() +
-                    "'. Expected a selector to include."
+                    "'. Expected a selector to call."
             );
         }
         if (
@@ -164,9 +164,9 @@ export default class Parser {
         }
     }
 
-    private parseInclude(result: Section): void {
-        // Take care of included funcs like "@include border(15px);"
-        this.tokenizer.consumeExpectedKeyword(Parser.KEYWORD_INCLUDE);
+    private parseCall(result: Section): void {
+        // Take care of call funcs like "@call border(15px);"
+        this.tokenizer.consumeExpectedKeyword(Parser.KEYWORD_CALL);
         const ref: FuncReference = new FuncReference();
         if (this.tokenizer.current().isIdentifier()) {
             ref.setName(this.tokenizer.consumeNoArg().getContents());

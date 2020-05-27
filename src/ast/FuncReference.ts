@@ -10,7 +10,7 @@ export default class FuncReference {
     }
 
     public toString(): string {
-        let str = '@include ';
+        let str = '@call ';
         str =
             str +
             FunctionCall.appendNameAndParameters(str, this.name, this.parameters);
