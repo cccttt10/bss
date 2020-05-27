@@ -5,7 +5,6 @@ export default class Scope {
     private parent: Scope;
     private variables: Map<string, Expression> = new Map<string, Expression>();
 
-    // TODO: no constructor overloading in TS
     constructor(scope?: Scope) {
         if (scope !== null && scope !== undefined) {
             this.parent = scope;

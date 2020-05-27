@@ -1,0 +1,6 @@
+div ul { list-style: none; }
+div li { display: inline-block; }
+div a {
+  margin: 3px 5px;
+  text-decoration: none;
+}

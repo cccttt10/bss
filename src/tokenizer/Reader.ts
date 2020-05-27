@@ -1,4 +1,3 @@
-// TODO: customized reader
 import { readFileSync } from 'fs';
 
 export default class Reader {

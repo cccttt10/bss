@@ -1,10 +1,10 @@
 import Attribute from './ast/Attribute';
 import Color from './ast/Color';
 import Expression from './ast/Expression';
+import Func from './ast/Func';
+import FuncReference from './ast/FuncReference';
 import FunctionCall from './ast/FunctionCall';
 import MediaFilter from './ast/MediaFilter';
-import Mixin from './ast/Mixin';
-import MixinReference from './ast/MixinReference';
 import NamedParameter from './ast/NamedParameter';
 import Num from './ast/Num';
 import Operation from './ast/Operation';
@@ -23,7 +23,7 @@ import { throwParseException } from './util';
 
 export default class Parser {
     public static readonly KEYWORD_IMPORT = 'import';
-    public static readonly KEYWORD_MIXIN = 'mixin';
+    public static readonly KEYWORD_FUNC = 'func';
     public static readonly KEYWORD_INCLUDE = 'include';
     public static readonly KEYWORD_EXTEND = 'extend';
     public static readonly KEYWORD_MEDIA = 'media';
@@ -44,11 +44,11 @@ export default class Parser {
             if (this.tokenizer.current().isKeyword(Parser.KEYWORD_IMPORT)) {
                 // parse @import
                 this.parseImport();
-            } else if (this.tokenizer.current().isKeyword(Parser.KEYWORD_MIXIN)) {
-                // parse @mixin
-                const mixin: Mixin = this.parseMixin();
-                if (mixin.getName() !== null) {
-                    this.result.addMixin(mixin);
+            } else if (this.tokenizer.current().isKeyword(Parser.KEYWORD_FUNC)) {
+                // parse @func
+                const func: Func = this.parseFunc();
+                if (func.getName() !== null) {
+                    this.result.addFunc(func);
                 }
             } else if (this.tokenizer.current().isKeyword(Parser.KEYWORD_MEDIA)) {
                 // parse @media
@@ -165,9 +165,9 @@ export default class Parser {
     }
 
     private parseInclude(result: Section): void {
-        // Take care of included mixins like "@include border(15px);"
+        // Take care of included funcs like "@include border(15px);"
         this.tokenizer.consumeExpectedKeyword(Parser.KEYWORD_INCLUDE);
-        const ref: MixinReference = new MixinReference();
+        const ref: FuncReference = new FuncReference();
         if (this.tokenizer.current().isIdentifier()) {
             ref.setName(this.tokenizer.consumeNoArg().getContents());
         } else {
@@ -175,7 +175,7 @@ export default class Parser {
                 this.tokenizer.current(),
                 "Unexpected token: '" +
                     this.tokenizer.current().getSource() +
-                    "'. Expected a mixin to use"
+                    "'. Expected a func to use"
             );
         }
         if (this.tokenizer.current().isSymbol('(')) {
@@ -197,7 +197,7 @@ export default class Parser {
             this.tokenizer.consumeExpectedSymbol(';');
         }
         if (ref.getName() !== null) {
-            result.addMixinReference(ref);
+            result.addFuncReference(ref);
         }
     }
 
@@ -731,29 +731,29 @@ export default class Parser {
         }
     }
 
-    private parseMixin(): Mixin {
-        this.tokenizer.consumeExpectedKeyword(Parser.KEYWORD_MIXIN);
-        const mixin: Mixin = new Mixin();
-        this.parseName(mixin);
-        this.parseParameterNames(mixin);
-        this.parseMixinAttributes(mixin);
-        return mixin;
+    private parseFunc(): Func {
+        this.tokenizer.consumeExpectedKeyword(Parser.KEYWORD_FUNC);
+        const func: Func = new Func();
+        this.parseName(func);
+        this.parseParameterNames(func);
+        this.parseFuncAttributes(func);
+        return func;
     }
 
-    private parseName(mixin: Mixin): void {
+    private parseName(func: Func): void {
         if (this.tokenizer.current().isIdentifier()) {
-            mixin.setName(this.tokenizer.consumeNoArg().getContents());
+            func.setName(this.tokenizer.consumeNoArg().getContents());
         } else {
             this.tokenizer.addError(
                 this.tokenizer.current(),
                 "Unexpected token: '" +
                     this.tokenizer.current().getSource() +
-                    "'. Expected the name of the mixin as identifier."
+                    "'. Expected the name of the func as identifier."
             );
         }
     }
 
-    private parseMixinAttributes(mixin: Mixin): void {
+    private parseFuncAttributes(func: Func): void {
         this.tokenizer.consumeExpectedSymbol('{');
         while (this.tokenizer.more()) {
             if (this.tokenizer.current().isSymbol('}')) {
@@ -762,17 +762,17 @@ export default class Parser {
             }
             if (this.isAtAttribute()) {
                 const attr: Attribute = this.parseAttribute();
-                mixin.addAttribute(attr);
+                func.addAttribute(attr);
             } else {
                 // if it is not an attribute
                 // it should a subsection
-                this.parseMixinSubSection(mixin);
+                this.parseFuncSubSection(func);
             }
         }
         this.tokenizer.consumeExpectedSymbol('}');
     }
 
-    private parseMixinSubSection(mixin: Mixin): void {
+    private parseFuncSubSection(func: Func): void {
         const subSection: Section = new Section();
         this.parseSectionSelector(false, subSection);
         this.tokenizer.consumeExpectedSymbol('{');
@@ -794,10 +794,10 @@ export default class Parser {
             }
         }
         this.tokenizer.consumeExpectedSymbol('}');
-        mixin.addSubSection(subSection);
+        func.addSubSection(subSection);
     }
 
-    private parseParameterNames(mixin: Mixin): void {
+    private parseParameterNames(func: Func): void {
         this.tokenizer.consumeExpectedSymbol('(');
         while (this.tokenizer.more()) {
             if (this.tokenizer.current().isSymbol('{')) {
@@ -814,7 +814,7 @@ export default class Parser {
                 return;
             }
             if (this.tokenizer.current().isSpecialIdentifier('$')) {
-                mixin.addParameter(this.tokenizer.consumeNoArg().getContents());
+                func.addParameter(this.tokenizer.consumeNoArg().getContents());
             } else {
                 this.tokenizer.addError(
                     this.tokenizer.current(),

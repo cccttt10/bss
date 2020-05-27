@@ -1,0 +1,8 @@
+div {
+  ul { list-style: none; }
+  li { display: inline-block; }
+  a {
+    margin: 3px 5px;
+    text-decoration: none;
+  }
+}

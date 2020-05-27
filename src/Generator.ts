@@ -3,9 +3,9 @@
 
 import Attribute from './ast/Attribute';
 import Expression from './ast/Expression';
+import Func from './ast/Func';
+import FuncReference from './ast/FuncReference';
 import FunctionCall from './ast/FunctionCall';
-import Mixin from './ast/Mixin';
-import MixinReference from './ast/MixinReference';
 import Section from './ast/Section';
 import Stylesheet from './ast/Stylesheet';
 import Value from './ast/Value';
@@ -22,9 +22,8 @@ export default class Generator {
     protected sections: Section[] = [];
     protected extensibleSections: Map<string, Section> = new Map<string, Section>();
     protected mediaQueries: Map<string, Section> = new Map<string, Section>();
-    protected mixins: Map<string, Mixin> = new Map<string, Mixin>();
+    protected funcs: Map<string, Func> = new Map<string, Func>();
     protected scope: Scope = new Scope();
-    // TODO: no baseDir
 
     protected resolve(sheet: string): Stylesheet {
         if (!sheet.endsWith('.bss')) {
@@ -34,7 +33,6 @@ export default class Generator {
         try {
             reader = new Reader(`./${sheet}`);
         } catch (err) {
-            // TODO: throw?
             stdout.error(`Cannot read file ./${sheet}`);
             throw err;
         }
@@ -60,8 +58,8 @@ export default class Generator {
         for (const imp of sheet.getImports()) {
             this.importStylesheetByName(imp);
         }
-        for (const mixin of sheet.getMixins()) {
-            this.mixins.set(mixin.getName(), mixin);
+        for (const func of sheet.getFuncs()) {
+            this.funcs.set(func.getName(), func);
         }
         for (const variable of sheet.getVariables()) {
             if (!this.scope.has(variable.getName()) || !variable.isDefaultValue()) {
@@ -88,7 +86,7 @@ export default class Generator {
         section: Section,
         stack: Section[]
     ): void {
-        stack = [...stack]; // TODO: equivalent to stack = new ArrayList<>(stack) to Java?
+        stack = [...stack];
         if (section.getSelectors().length > 0) {
             this.expandSection(mediaQueryPath, section, stack);
         } else {
@@ -149,7 +147,6 @@ export default class Generator {
                         ...copy.getSelectors()[i],
                     ];
                 }
-                // TODO: in java it should look like this
                 // for (List<String> selector : copy.getSelectors()) {
                 //     selector.addAll(0, parent.getSelectors().get(0));
                 // }
@@ -280,7 +277,6 @@ export default class Generator {
         let qry: Section = this.mediaQueries.get(mediaQueryPath);
         if (qry === null || qry === undefined) {
             qry = new Section();
-            // TODO: in java it should be qry.getSelectors().add(Collections.singletonList(mediaQueryPath));
             qry.getSelectors().push([mediaQueryPath]);
             this.mediaQueries.set(mediaQueryPath, qry);
         }
@@ -288,7 +284,7 @@ export default class Generator {
     }
 
     public compile(): void {
-        this.sections.unshift(...this.mediaQueries.values()); // TODO: hashmap values may be unordered
+        this.sections.unshift(...this.mediaQueries.values());
         const newSections = [...this.sections];
         for (const section of newSections) {
             this.compileSection(section);
@@ -315,7 +311,7 @@ export default class Generator {
             }
         }
 
-        this.compileMixins(section);
+        this.compileFuncs(section);
 
         for (const attr of section.getAttributes()) {
             attr.setExpression(attr.getExpression().eval(this.scope, this));
@@ -326,40 +322,40 @@ export default class Generator {
         }
     }
 
-    protected compileMixins(section: Section): void {
+    protected compileFuncs(section: Section): void {
         for (const ref of section.getReferences()) {
             const subScope: Scope = new Scope(this.scope);
-            const mixin: Mixin = this.mixins.get(ref.getName());
-            if (mixin === null || mixin === undefined) {
+            const func: Func = this.funcs.get(ref.getName());
+            if (func === null || func === undefined) {
                 stdout.warn(
-                    `Skipping unknown @mixin '%${ref.getName()}' referenced by selector '%${section.getSelectorString()}'`
+                    `Skipping unknown @func '%${ref.getName()}' referenced by selector '%${section.getSelectorString()}'`
                 );
 
                 return;
             }
-            this.compileMixin(section, ref, subScope, mixin);
+            this.compileFunc(section, ref, subScope, func);
         }
     }
 
-    private compileMixin(
+    private compileFunc(
         section: Section,
-        ref: MixinReference,
+        ref: FuncReference,
         subScope: Scope,
-        mixin: Mixin
+        func: Func
     ): void {
-        if (mixin.getParameters().length !== ref.getParameters().length) {
+        if (func.getParameters().length !== ref.getParameters().length) {
             stdout.warn(
-                `@mixin call '${ref.getName()}' by selector '${section.getSelectorString()}' does not match expected number of parameters. Found: ${
+                `@func call '${ref.getName()}' by selector '${section.getSelectorString()}' does not match expected number of parameters. Found: ${
                     ref.getParameters().length
-                }, expected: ${mixin.getParameters().length}`
+                }, expected: ${func.getParameters().length}`
             );
         }
 
-        this.evaluateParameters(ref, subScope, mixin);
+        this.evaluateParameters(ref, subScope, func);
 
-        this.copyAndEvaluateAttributes(section, subScope, mixin);
+        this.copyAndEvaluateAttributes(section, subScope, func);
 
-        for (const child of mixin.getSubSections()) {
+        for (const child of func.getSubSections()) {
             this.processSubSection(section, subScope, child);
         }
     }
@@ -396,9 +392,9 @@ export default class Generator {
     private copyAndEvaluateAttributes(
         section: Section,
         subScope: Scope,
-        mixin: Mixin
+        func: Func
     ): void {
-        for (const attr of mixin.getAttributes()) {
+        for (const attr of func.getAttributes()) {
             if (attr.getExpression().isConstant()) {
                 section.addAttribute(attr);
             } else {
@@ -410,12 +406,12 @@ export default class Generator {
     }
 
     private evaluateParameters(
-        ref: MixinReference,
+        ref: FuncReference,
         subScope: Scope,
-        mixin: Mixin
+        func: Func
     ): void {
         let i = 0;
-        for (const name of mixin.getParameters()) {
+        for (const name of func.getParameters()) {
             if (ref.getParameters().length > i) {
                 subScope.set(name, ref.getParameters()[i]);
             }
@@ -441,6 +437,6 @@ export default class Generator {
     }
 
     public evaluateFunction(call: FunctionCall): Expression {
-        return new Value(call.toString()); // TODO: ???
+        return new Value(call.toString());
     }
 }

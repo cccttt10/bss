@@ -18,7 +18,7 @@ export default class BssTokenizer extends Tokenizer {
         this.addSpecialIdStarter('$');
         this.addSpecialIdStarter('#');
         this.addKeyword(Parser.KEYWORD_IMPORT);
-        this.addKeyword(Parser.KEYWORD_MIXIN);
+        this.addKeyword(Parser.KEYWORD_FUNC);
         this.addKeyword(Parser.KEYWORD_INCLUDE);
         this.addKeyword(Parser.KEYWORD_EXTEND);
         this.addKeyword(Parser.KEYWORD_MEDIA);

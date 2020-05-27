@@ -19,7 +19,6 @@ export default abstract class Lookahead<T> {
         return returnVal;
     }
 
-    // TODO next(), next(int offset)
     public next(offset?: number): T {
         if (typeof offset !== 'number') {
             return this.next(1);
@@ -52,8 +51,6 @@ export default abstract class Lookahead<T> {
 
     protected abstract fetch(): T;
 
-    // TODO: public T consume()
-    //       public void consume(int numberOfItems)
     public consumeNoArg(): T {
         const result = this.current();
         this.consume(1);

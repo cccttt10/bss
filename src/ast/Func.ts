@@ -1,7 +1,7 @@
 import Attribute from './Attribute';
 import Section from './Section';
 
-export default class Mixin {
+export default class Func {
     private parameters: string[] = [];
     private attributes: Attribute[] = [];
     private subSections: Section[] = [];

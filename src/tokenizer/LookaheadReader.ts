@@ -19,7 +19,6 @@ export default class LookaheadReader extends Lookahead<Char> {
         return new Char('\0', this.line, this.pos);
     }
 
-    // TODO: no try
     protected fetch(): Char {
         const character: number | string = this.input.read();
         if (character === -1) {

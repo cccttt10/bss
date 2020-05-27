@@ -3,7 +3,7 @@ import Output from '../Output';
 import Scope from '../Scope';
 import Attribute from './Attribute';
 import Expression from './Expression';
-import MixinReference from './MixinReference';
+import FuncReference from './FuncReference';
 /*
 represents a section containing a list of selectors and a group of attributes
 this is used for both,
@@ -18,7 +18,7 @@ export default class Section {
     private extendedSections: string[] = [];
     private attributes: Attribute[] = [];
     private subSections: Section[] = [];
-    private references: MixinReference[] = [];
+    private references: FuncReference[] = [];
 
     public getSelectors(): string[][] {
         return this.selectors;
@@ -40,7 +40,7 @@ export default class Section {
         this.extendedSections.push(name);
     }
 
-    public addMixinReference(ref: MixinReference): void {
+    public addFuncReference(ref: FuncReference): void {
         this.references.push(ref);
     }
 
@@ -56,7 +56,7 @@ export default class Section {
         return this.subSections;
     }
 
-    public getReferences(): MixinReference[] {
+    public getReferences(): FuncReference[] {
         return this.references;
     }
 

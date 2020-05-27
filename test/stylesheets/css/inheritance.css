@@ -1,0 +1,17 @@
+.message, .success, .error, .warning {
+    border: 2px solid #bbb;
+    padding: 20px;
+    color: #444;
+  }
+  
+  .success {
+    background-color: green;
+  }
+  
+  .error {
+    background-color: red;
+  }
+  
+  .warning {
+    background-color: yellow;
+  }

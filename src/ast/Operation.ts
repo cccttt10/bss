@@ -71,13 +71,13 @@ export default class Operation implements Expression {
         let lVal: number = l.getNumericValue();
         let lUnit: string = l.getUnit();
         if (lUnit === '%') {
-            lVal = lVal / 100; // TODO: 100d in decimal?
+            lVal = lVal / 100;
             lUnit = '';
         }
         let rVal: number = r.getNumericValue();
         let rUnit: string = r.getUnit();
         if (rUnit === '%') {
-            rVal = rVal / 100; // TODO: 100d in decimal?
+            rVal = rVal / 100;
             rUnit = '';
         }
 
@@ -94,7 +94,6 @@ export default class Operation implements Expression {
         const rounded: number = Math.round(value);
         if (Math.abs(value - rounded) > 0.009) {
             return new Num(value.toString() + unit);
-            // TODO: value not formatted as String.format(Locale.ENGLISH, "%1.2f"
         }
         return new Num(value.toString() + unit);
     }

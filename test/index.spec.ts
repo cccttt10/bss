@@ -6,7 +6,16 @@ import Output from '../src/Output';
 
 describe('test', () => {
     it('should compile the given bss files into css files', () => {
-        const filenames: string[] = ['extends', 'function', 'nesting', 'variables'];
+        const filenames: string[] = [
+            'extends',
+            'function_0',
+            'function',
+            'inheritance',
+            'nesting_0',
+            'nesting',
+            'variables_0',
+            'variables',
+        ];
         const stylesheetsDir = './test/stylesheets/';
         for (const filename of filenames) {
             const gen: Generator = new Generator();

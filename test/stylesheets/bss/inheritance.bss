@@ -1,0 +1,30 @@
+%message-shared {
+  border: 2px solid #bbb;
+  padding: 20px;
+  color: #444;
+}
+
+/* This CSS won't print because %equal-heights is never extended. */
+%equal-heights {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.message {
+  @extend %message-shared;
+}
+
+.success {
+  @extend %message-shared;
+  background-color: green;
+}
+
+.error {
+  @extend %message-shared;
+  background-color: red;
+}
+
+.warning {
+  @extend %message-shared;
+  background-color: yellow;
+}

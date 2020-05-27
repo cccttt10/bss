@@ -1,11 +1,11 @@
-import Mixin from './Mixin';
+import Func from './Func';
 import Section from './Section';
 import Variable from './Variable';
 
 export default class Stylesheet {
     private name: string;
     private variables: Variable[] = [];
-    private mixins: Mixin[] = [];
+    private funcs: Func[] = [];
     private sections: Section[] = [];
     private imports: string[] = [];
 
@@ -25,16 +25,16 @@ export default class Stylesheet {
         this.sections.push(section);
     }
 
-    public addMixin(mixin: Mixin): void {
-        this.mixins.push(mixin);
+    public addFunc(func: Func): void {
+        this.funcs.push(func);
     }
 
     public getVariables(): Variable[] {
         return this.variables;
     }
 
-    public getMixins(): Mixin[] {
-        return this.mixins;
+    public getFuncs(): Func[] {
+        return this.funcs;
     }
 
     public getSections(): Section[] {

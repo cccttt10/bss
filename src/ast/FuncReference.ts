@@ -1,7 +1,7 @@
 import Expression from './Expression';
 import FunctionCall from './FunctionCall';
 
-export default class MixinReference {
+export default class FuncReference {
     private name: string;
     private parameters: Expression[] = [];
 

@@ -25,9 +25,9 @@ export default class Tokenizer extends Lookahead<Token> {
     private treatSinglePipeAsBracket = true;
     private specialIdStarters = new Set<string>();
     private specialIdTerminators = new Set<string>();
-    private keywords = new Map<string, string>(); // TODO: IdentityHashMap
+    private keywords = new Map<string, string>();
     private keywordsCaseSensitive = false;
-    private stringDelimiters = new Map<string, string>(); // TODO: IdentityHashMap
+    private stringDelimiters = new Map<string, string>();
 
     constructor(input: Reader) {
         super();
@@ -51,7 +51,7 @@ export default class Tokenizer extends Lookahead<Token> {
     protected fetch(): Token {
         // fetch and ignore any whitespace
         while (this.input.current().isWhitespace()) {
-            this.input.consumeNoArg(); // TODO: no overloading in JS
+            this.input.consumeNoArg();
         }
 
         // end of input reached? Pass end of input signal on...
@@ -110,7 +110,7 @@ export default class Tokenizer extends Lookahead<Token> {
                     .getStringValue()}`
             )
         );
-        this.input.consumeNoArg(); // TODO: no overloading in JS
+        this.input.consumeNoArg();
         return this.fetch();
     }
 
@@ -129,7 +129,6 @@ export default class Tokenizer extends Lookahead<Token> {
         );
     }
 
-    // TODO: ...this.brackets is spread syntax, in Java it's just brackets
     protected isAtBracket(inSymbol: boolean): boolean {
         return (
             this.input.current().is(...this.brackets) ||
@@ -168,7 +167,7 @@ export default class Tokenizer extends Lookahead<Token> {
             !this.input.current().isEndOfInput() &&
             !this.input.current().isNewLine()
         ) {
-            this.input.consumeNoArg(); // TODO: no overloading in JS, must use consumeArg
+            this.input.consumeNoArg();
         }
     }
 
@@ -185,7 +184,7 @@ export default class Tokenizer extends Lookahead<Token> {
             if (this.isAtEndOfBlockComment()) {
                 return;
             }
-            this.input.consumeNoArg(); // TODO: no overloading in JS, must use consumeArg
+            this.input.consumeNoArg();
         }
         this.problemCollector.push(
             ParseError.error(this.input.current(), 'Premature end of block comment')
@@ -198,7 +197,7 @@ export default class Tokenizer extends Lookahead<Token> {
             this.input.current().getValue()
         );
         const result: Token = Token.create(TokenType.STRING, this.input.current());
-        result.addToTrigger(this.input.consumeNoArg()); // TODO: no overloading in JS, must use consumeArg
+        result.addToTrigger(this.input.consumeNoArg());
 
         while (
             !this.input.current().isNewLine() &&
@@ -289,7 +288,7 @@ export default class Tokenizer extends Lookahead<Token> {
     protected handleKeywords(idToken: Token): Token {
         const keyword: string = this.keywords.get(
             this.keywordsCaseSensitive
-                ? idToken.getContents() // TODO: no intern in JS
+                ? idToken.getContents()
                 : idToken.getContents().toLowerCase()
         );
         if (keyword !== null && keyword !== undefined) {
@@ -440,7 +439,6 @@ export default class Tokenizer extends Lookahead<Token> {
         this.keywordsCaseSensitive = keywordsCaseSensitive;
     }
 
-    // TODO: no string intern in JS
     public addKeyword(keyword: string): void {
         this.keywords.set(
             this.keywordsCaseSensitive ? keyword : keyword.toLowerCase(),

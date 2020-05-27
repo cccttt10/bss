@@ -12,8 +12,6 @@ export default class Token implements Position {
     private line: number;
     protected pos: number;
 
-    // TODO: private Token constructor
-
     public static create(type: TokenType, pos: Position): Token {
         const result: Token = new Token();
         result.type = type;
@@ -45,7 +43,6 @@ export default class Token implements Position {
         return this;
     }
 
-    // TODO: addToContent char and Char, method overloading
     public addToContent(ch: Char | string): Token {
         if (ch instanceof Char) {
             return this.addToContent(ch.getValue());
@@ -61,7 +58,6 @@ export default class Token implements Position {
         return this;
     }
 
-    // TODO: intern
     public getTrigger(): string {
         if (this.internTrigger === null) {
             this.internTrigger = this.trigger;
@@ -110,7 +106,6 @@ export default class Token implements Position {
         return this.type !== TokenType.EOI;
     }
 
-    // TODO: trigger.intern()
     public matches(type: TokenType, trigger: string): boolean {
         if (!this.is(type)) {
             return false;
@@ -121,7 +116,6 @@ export default class Token implements Position {
         return this.getTrigger() === trigger;
     }
 
-    // TODO: aTrigger.intern()
     public wasTriggeredBy(...triggers: string[]): boolean {
         if (triggers.length === 0) {
             return false;
@@ -134,7 +128,6 @@ export default class Token implements Position {
         return false;
     }
 
-    // TODO: equalsIgnoreCase
     public hasContent(content: string): boolean {
         if (content === null) {
             throw new Error('content must not be null');

@@ -1,0 +1,6 @@
+@func transform($effect) {
+  -webkit-transform: $effect;
+  -ms-transform: $effect;
+  transform: $effect;
+}
+.container { @call transform(rotate(60deg)); }
