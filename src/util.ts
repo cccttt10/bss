@@ -33,3 +33,9 @@ export const throwParseException = (parseException: ParseException): void => {
     stdout.error(parseException.toString());
     throw new Error();
 };
+
+export const throwRuntimeError = (err: Error): void => {
+    stdout.error(err.message);
+    stdout.error(err.stack);
+    process.exit(1);
+};

@@ -16,4 +16,6 @@ A compiler that compiles our BSS language into CSS
 
 - `npm run test-cover`: execute tests with coverage report
 
-- `npm run compile <PATH_OF_BSS_FILE_RELATIVE_TO_PROJECT_ROOT_DIR>` to compile a bss file
+- `npm run compile -- <PATH_OF_BSS_FILE_RELATIVE_TO_PROJECT_ROOT_DIR>` to compile a bss file
+  
+- `npm run compile-debug -- <PATH_OF_BSS_FILE_RELATIVE_TO_PROJECT_ROOT_DIR>` to compile a bss file in debug mode (tokens will be printed to the console)
