@@ -1,5 +1,7 @@
 # BSS
 
+[![Build Status](https://travis-ci.com/chuntonggao/bss.svg?token=jZDqPsD54k2hHRw7x8zD&branch=master)](https://travis-ci.com/chuntonggao/bss)
+
 A compiler that compiles our BSS language into CSS
 
 [The BSS language specification](https://cgao.info/bss-language-design) describes the motivation behind our language design and explains the syntax of BSS. Note that we proposed control flow in our language design. However, due to time constraints, we did not implement this feature in our compiler. Our compiler is very extensible, so future developers can add control flow feature and other additional features to it.
